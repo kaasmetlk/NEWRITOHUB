@@ -1,0 +1,253 @@
+local Library = {Toggle = true,FirstTab = nil,TabCount = 0,ColorTable = {}}
+
+local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local function MakeDraggable(ClickObject, Object)
+	local Dragging = nil
+	local DragInput = nil
+	local DragStart = nil
+	local StartPosition = nil
+	
+	ClickObject.InputBegan:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+			Dragging = true
+			DragStart = Input.Position
+			StartPosition = Object.Position
+			
+			Input.Changed:Connect(function()
+				if Input.UserInputState == Enum.UserInputState.End then
+					Dragging = false
+				end
+			end)
+		end
+	end)
+	
+	ClickObject.InputChanged:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
+			DragInput = Input
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(Input)
+		if Input == DragInput and Dragging then
+			local Delta = Input.Position - DragStart
+			Object.Position = UDim2.new(StartPosition.X.Scale, StartPosition.X.Offset + Delta.X, StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y)
+		end
+	end)
+end
+
+function Library:CreateWindow(Config, Parent)
+	local WindowInit = {}
+	local Folder = game:GetObjects("rbxassetid://7141683860")[1]
+	local Screen = Folder.Bracket:Clone()
+	local Main = Screen.Main
+	local Holder = Main.Holder
+	local Topbar = Main.Topbar
+	local TContainer = Holder.TContainer
+	local TBContainer = Holder.TBContainer.Holder
+	--[[
+	-- idk probably fix for exploits that dont have this function
+	if syn and syn.protect_gui then
+		syn.protect_gui(Screen)
+	end
+	]]
+	
+	Screen.Name = Config.WindowName
+	Screen.Parent = Parent
+	Topbar.WindowName.Text = Config.WindowName
+
+	MakeDraggable(Topbar,Main)
+	local function CloseAll()
+		for _,Tab in pairs(TContainer:GetChildren()) do
+			if Tab:IsA("ScrollingFrame") then
+				Tab.Visible = false
+			end
+		end
+	end
+	local function ResetAll()
+		for _,TabButton in pairs(TBContainer:GetChildren()) do
+			if TabButton:IsA("TextButton") then
+				TabButton.BackgroundTransparency = 1
+			end
+		end
+		for _,TabButton in pairs(TBContainer:GetChildren()) do
+			if TabButton:IsA("TextButton") then
+				TabButton.Size = UDim2.new(0,480 / Library.TabCount,1,0)
+			end
+		end
+		for _,Pallete in pairs(Screen:GetChildren()) do
+			if Pallete:IsA("Frame") and Pallete.Name ~= "Main" then
+				Pallete.Visible = false
+			end
+		end
+	end
+	local function KeepFirst()
+		for _,Tab in pairs(TContainer:GetChildren()) do
+			if Tab:IsA("ScrollingFrame") then
+				if Tab.Name == Library.FirstTab .. " T" then
+					Tab.Visible = true
+				else
+					Tab.Visible = false
+				end
+			end
+		end
+		for _,TabButton in pairs(TBContainer:GetChildren()) do
+			if TabButton:IsA("TextButton") then
+				if TabButton.Name == Library.FirstTab .. " TB" then
+					TabButton.BackgroundTransparency = 0
+				else
+					TabButton.BackgroundTransparency = 1
+				end
+			end
+		end
+	end
+	local function Toggle(State)
+		if State then
+			Main.Visible = true
+		elseif not State then
+			for _,Pallete in pairs(Screen:GetChildren()) do
+				if Pallete:IsA("Frame") and Pallete.Name ~= "Main" then
+					Pallete.Visible = false
+				end
+			end
+			Screen.ToolTip.Visible = false
+			Main.Visible = false
+		end
+		Library.Toggle = State
+	end
+	local function ChangeColor(Color)
+		Config.Color = Color
+		for i, v in pairs(Library.ColorTable) do
+			if v.BackgroundColor3 ~= Color3.fromRGB(50, 50, 50) then
+				v.BackgroundColor3 = Color
+			end
+		end
+	end
+
+	function WindowInit:Toggle(State)
+		Toggle(State)
+	end
+
+	function WindowInit:ChangeColor(Color)
+		ChangeColor(Color)
+	end
+
+	function WindowInit:SetBackground(ImageId)
+		Holder.Image = "rbxassetid://" .. ImageId
+	end
+
+	function WindowInit:SetBackgroundColor(Color)
+		Holder.ImageColor3 = Color
+	end
+	function WindowInit:SetBackgroundTransparency(Transparency)
+		Holder.ImageTransparency = Transparency
+	end
+
+	function WindowInit:SetTileOffset(Offset)
+		Holder.TileSize = UDim2.new(0,Offset,0,Offset)
+	end
+	function WindowInit:SetTileScale(Scale)
+		Holder.TileSize = UDim2.new(Scale,0,Scale,0)
+	end
+
+	RunService.RenderStepped:Connect(function()
+        if game:GetService("CoreGui"):FindFirstChild("ParadiseHubv1") ~= nil then
+		    if Library.Toggle then
+
+            end
+        end
+	end)
+
+	function WindowInit:CreateTab(Name)
+		local TabInit = {}
+		local Tab = Folder.Tab:Clone()
+		local TabButton = Folder.TabButton:Clone()
+
+		Tab.Name = Name .. " T"
+		Tab.Parent = TContainer
+
+		TabButton.Name = Name .. " TB"
+		TabButton.Parent = TBContainer
+		TabButton.Title.Text = Name
+		TabButton.BackgroundColor3 = Config.Color
+
+		table.insert(Library.ColorTable, TabButton)
+		Library.TabCount = Library.TabCount + 1
+		if Library.TabCount == 1 then
+			Library.FirstTab = Name
+		end
+
+		CloseAll()
+		ResetAll()
+		KeepFirst()
+
+		local function GetSide(Longest)
+			if Longest then
+				if Tab.LeftSide.ListLayout.AbsoluteContentSize.Y > Tab.RightSide.ListLayout.AbsoluteContentSize.Y then
+					return Tab.LeftSide
+				else
+					return Tab.RightSide
+				end
+			else
+				if Tab.LeftSide.ListLayout.AbsoluteContentSize.Y > Tab.RightSide.ListLayout.AbsoluteContentSize.Y then
+					return Tab.RightSide
+				else
+					return Tab.LeftSide
+				end
+			end
+		end
+
+		TabButton.MouseButton1Click:Connect(function()
+			CloseAll()
+			ResetAll()
+			Tab.Visible = true
+			TabButton.BackgroundTransparency = 0
+		end)
+
+		Tab.LeftSide.ListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+			if GetSide(true).Name == Tab.LeftSide.Name then
+				Tab.CanvasSize = UDim2.new(0,0,0,Tab.LeftSide.ListLayout.AbsoluteContentSize.Y + 15)
+			else
+				Tab.CanvasSize = UDim2.new(0,0,0,Tab.RightSide.ListLayout.AbsoluteContentSize.Y + 15)
+			end
+		end)
+		Tab.RightSide.ListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+			if GetSide(true).Name == Tab.LeftSide.Name then
+				Tab.CanvasSize = UDim2.new(0,0,0,Tab.LeftSide.ListLayout.AbsoluteContentSize.Y + 15)
+			else
+				Tab.CanvasSize = UDim2.new(0,0,0,Tab.RightSide.ListLayout.AbsoluteContentSize.Y + 15)
+			end
+		end)
+
+		function TabInit:CreateSection(Name)
+			local SectionInit = {}
+			local Section = Folder.Section:Clone()
+			Section.Name = Name .. " S"
+			Section.Parent = GetSide(false)
+
+			Section.Title.Text = Name
+			Section.Title.Size = UDim2.new(0,Section.Title.TextBounds.X + 10,0,2)
+
+			Section.Container.ListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+				Section.Size = UDim2.new(1,0,0,Section.Container.ListLayout.AbsoluteContentSize.Y + 15)
+			end)
+			
+			function SectionInit:CreateLabel(Name)
+				local LabelInit = {}
+				local Label = Folder.Label:Clone()
+				Label.Name = Name .. " L"
+				Label.Parent = Section.Container
+				Label.Text = Name
+				Label.Size = UDim2.new(1,-10,0,Label.TextBounds.Y)
+				function LabelInit:UpdateText(Text)
+					Label.Text = Text
+					Label.Size = UDim2.new(1,-10,0,Label.TextBounds.Y)
+				end
+				return LabelInit
+			end
+			function SectionInit:CreateButton(Name, Callback)
+				local ButtonInit = {}
+				local Button = Folder.Button
