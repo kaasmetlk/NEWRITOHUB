@@ -11,6 +11,7 @@ local games = {
     ["Da hood"] = 2788229376,
     ["Shadovis rpg"] = 9585537847,
     ["Yba"] = 2809202155,
+    ["TEST GAME"] = 69184822,
  }
 
 notify("Paradise Hub","Initiating","Loading Paradise Hub!",11310622169,"255, 100, 100")
