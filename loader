@@ -1,0 +1,21 @@
+local notif = loadstring(game:HttpGet("https://raw.githubusercontent.com/Valenity/NotificationUI/main/Cheater.FunAreLeeches!"))()
+function notify(fuckyou,title,description,icon,color)
+    notif:message {
+        Title = fuckyou.." | <font color='rgb(".. color ..")'>"..title.."</font>",
+        Description = description,
+        Icon = icon
+    }
+end
+local games = {
+    ["TEST"] = id,
+
+ }
+
+notify("rito'hub","Initiating","Loading",11310622169,"255, 100, 100")
+wait(1.5)
+for _, x in pairs(games) do
+    if x == game.PlaceId then
+        notify("Paradise Hub","Found!","Playing: ".._,11310622169,"75, 100, 200")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/kaasmetlk/NEWRITOHUB/Games/"..x))()
+    end
+end
