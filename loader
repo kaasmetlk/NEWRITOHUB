@@ -13,12 +13,11 @@ local games = {
     ["Yba"] = 2809202155,
     ["TEST GAME"] = 69184822,
  }
-
-notify("rito'hub","Initiating","Loading",11310622169,"255, 100, 100")
+ notify("Rito'Hub","Initiating","Loading Rito'Hub",11310622169,"255, 100, 100")
 wait(1.5)
 for _, x in pairs(games) do
     if x == game.PlaceId then
-        notify("Found!","Playing: ".._,11310622169,"75, 100, 200")
+        notify("Rito'Hub","Found!","Playing: ".._,11310622169,"75, 100, 200")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/kaasmetlk/NEWRITOHUB/main/Games/"..x))()
     end
 end
