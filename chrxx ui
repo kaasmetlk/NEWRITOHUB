@@ -1,0 +1,549 @@
+--discord.gg/boronide, code generated using luamin.js™
+
+
+
+
+repeat
+	wait()
+until game:IsLoaded()
+local L_1_ = tick()
+local L_2_ = game.PlaceId
+local L_3_ = {}
+local L_4_ = ""
+local L_5_ = os.date("!*t").hour
+local L_6_ = false
+local L_7_ = pcall(function()
+	L_3_ = game:GetService('HttpService'):JSONDecode(readfile("amongus.sus"))
+end)
+if not L_7_ then
+	table.insert(L_3_, L_5_)
+	writefile("amongus.sus", game:GetService('HttpService'):JSONEncode(L_3_))
+end
+function TPReturner()
+	local L_30_;
+	if L_4_ == "" then
+		L_30_ = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. L_2_ .. '/servers/Public?sortOrder=Asc&limit=100'))
+	else
+		L_30_ = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. L_2_ .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. L_4_))
+	end
+	local L_31_ = ""
+	if L_30_.nextPageCursor and L_30_.nextPageCursor ~= "null" and L_30_.nextPageCursor ~= nil then
+		L_4_ = L_30_.nextPageCursor
+	end
+	local L_32_ = 0;
+	for L_33_forvar0, L_34_forvar1 in pairs(L_30_.data) do
+		local L_35_ = true
+		L_31_ = tostring(L_34_forvar1.id)
+		if tonumber(L_34_forvar1.maxPlayers) > tonumber(L_34_forvar1.playing) then
+			for L_36_forvar0, L_37_forvar1 in pairs(L_3_) do
+				if L_32_ ~= 0 then
+					if L_31_ == tostring(L_37_forvar1) then
+						L_35_ = false
+					end
+				else
+					if tonumber(L_5_) ~= tonumber(L_37_forvar1) then
+						local L_38_ = pcall(function()
+							delfile("amongus.sus")
+							L_3_ = {}
+							table.insert(L_3_, L_5_)
+						end)
+					end
+				end
+				L_32_ = L_32_ + 1
+			end
+			if L_35_ == true then
+				table.insert(L_3_, L_31_)
+				wait()
+				pcall(function()
+					writefile("amongus.sus", game:GetService('HttpService'):JSONEncode(L_3_))
+					wait()
+					game:GetService("TeleportService"):TeleportToPlaceInstance(L_2_, L_31_, game.Players.LocalPlayer)
+				end)
+				wait(4)
+			end
+		end
+	end
+end
+function Teleport()
+	while task.wait() do
+		pcall(function()
+			TPReturner()
+			if L_4_ ~= "" then
+				TPReturner()
+			end
+		end)
+	end
+end
+if game.CoreGui:FindFirstChild("FluxLib") then
+	game.CoreGui:FindFirstChild("FluxLib"):Destroy()
+end
+local L_8_ = {
+	["Rib Cage"] = "rbxassetid://5249254947",
+	["Mysterious Arrow"] = "rbxassetid://7106104343",
+	["Gold Coin"] = "rbxassetid://7124126253",
+	["Zepellin Headband"] = "rbxassetid://6924442799"
+}
+_G.FarmTable = {
+	WalkSpeed1 = false,
+	JumpPower1 = false,
+	Farmer = false,
+	Wielder = false,
+	ToggleSpeed = false,
+	ToggleJump = false,
+	NPCFarm = false
+}
+local L_9_ = {
+	Mobs = {
+		AlphaThug = false,
+		CorruptPolice = false,
+		DioOverHeaven = false,
+		SecurityGuard = false
+	},
+	all = {
+		RibCage = false,
+		MysteriousArrow = false,
+		GoldCoin = false,
+		ZepellinHeadband = false
+	},
+	StandMoves = {
+		AutoBarrage = nil
+	},
+	AutoStandMoves = nil,
+	MobToFarm = nil,
+	MobFarm = false,
+	ItemFarm = false,
+	AutoSkill = false,
+	Right = 3,
+	LowerHigher = 1,
+	Left = 0,
+	Looped = false,
+	HPBack = false,
+	HPAmount = nil,
+	AutoSell = false,
+	AutoArcade = false,
+	AutoHideArcadeGUI = false,
+	noCD = false,
+	Target = nil,
+	Weld = nil,
+	FarmDelay = 0.5
+}
+local L_10_ = Instance.new("Animation", game:GetService("ReplicatedStorage").Anims)
+L_10_.AnimationId = "rbxassetid://6780511001";
+L_10_.Archivable = true
+L_10_.Name = "EatRoka"
+function m1()
+	local L_39_ = "Attack"
+	local L_40_ = "m1"
+	workspace.Living[game.Players.LocalPlayer.Name].RemoteEvent:FireServer(L_39_, L_40_)
+	task.wait()
+end
+local L_11_ = function()
+	game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(game:GetService("ReplicatedStorage").Anims.EatRoka):Play()
+end
+                                        -- Variables
+local L_12_ = game.Players.LocalPlayer
+local L_13_ = {}
+local L_14_ = {}
+local L_15_ = {}
+local L_16_ = game:GetService("Players").LocalPlayer
+        
+                                        -- Tables
+for L_41_forvar0, L_42_forvar1 in pairs(game:GetService("ReplicatedStorage").Anims:GetChildren()) do
+	if L_42_forvar1:IsA("Animation") then
+		table.insert(L_13_, L_42_forvar1.Name)
+	end
+end
+for L_43_forvar0, L_44_forvar1 in pairs(game:GetService("ReplicatedStorage").Anims.Poses:GetChildren()) do
+	if L_44_forvar1:IsA("Animation") then
+		table.insert(L_14_, L_44_forvar1.Name)
+	end
+end
+for L_45_forvar0, L_46_forvar1 in pairs(game:GetService("Workspace").Locations:GetChildren()) do
+	if L_46_forvar1:IsA("Part") then
+		table.insert(L_15_, L_46_forvar1.Name)
+	end
+end
+task.spawn(function()
+	game:GetService("Players").LocalPlayer.PlayerGui.ChildAdded:Connect(function(L_47_arg0)
+		if L_47_arg0.Name == "RollingItem" and L_9_.AutoHideArcadeGUI then
+			L_47_arg0:Destroy()
+		end
+	end)
+end)
+local L_17_ = getrawmetatable(game)
+setreadonly(L_17_, false)
+local L_18_ = game:GetService("ReplicatedStorage").Returner
+local L_19_
+L_19_ = hookmetamethod(
+                                            game, "__namecall", function(L_48_arg0, ...)
+	local L_49_ = getnamecallmethod()
+	local L_50_ = {
+		...
+	}
+	if L_48_arg0 == L_18_ and L_50_[1] == "idklolbrah2de" and L_49_ == "InvokeServer" then
+		return "  ___XP DE KEY"
+	end
+	return L_19_(L_48_arg0, ...)
+end)
+do
+	setreadonly(Vector3, false)
+	local L_51_ = Vector3.new()
+	setreadonly(getrawmetatable(L_51_), false)
+	local L_52_ = getrawmetatable(L_51_)
+	local L_53_ = rawget(L_52_, "__index")
+	L_52_.__index = newcclosure(function(L_54_arg0, L_55_arg1, L_56_arg2)
+		if not checkcaller() and (getcallingscript() == game:GetService("ReplicatedFirst").ItemSpawn and tostring(L_55_arg1):lower() == "magnitude") then
+			return 0
+		end
+		return L_53_(L_54_arg0, L_55_arg1, L_56_arg2)
+	end)
+end
+function Sell(L_57_arg0)
+	task.spawn(function()
+		pcall(function()
+			game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(L_57_arg0))
+		end)
+		local L_58_ = "EndDialogue"
+		local L_59_ = {
+			["NPC"] = "Merchant",
+			["Option"] = "Option1",
+			["Dialogue"] = "Dialogue5"
+		}
+		workspace.Living[game.Players.LocalPlayer.Name].RemoteEvent:FireServer(L_58_, L_59_)
+	end)
+end
+coroutine.wrap(function()
+	L_12_.PlayerGui.ChildAdded:Connect(function(L_60_arg0)
+		if L_9_.AutoSell then
+			if L_60_arg0.Name == "Message" then
+				local L_61_ = L_12_.PlayerGui.Message.TextLabel.Text
+				if L_12_.PlayerGui.Message.TextLabel.Text:match("Rokakaka") then
+					Sell("Rokakaka")
+				elseif (L_12_.PlayerGui.Message.TextLabel.Text:match("Mysterious Arrow")) then
+					Sell("Mysterious Arrow")
+				elseif L_61_:match("Gold Coin") then
+					Sell("Gold Coin")
+				elseif L_61_:match("Rib Cage") then
+					Sell("Rib Cage of The Saint's Corpse")
+				elseif L_61_:match("Quinton's Glove") then
+					Sell("Quinton's Glove")
+				elseif L_61_:match("Diamond") then
+					Sell("Diamond")
+				elseif L_61_:match("Pure") then
+					Sell("Pure Rokakaka")
+				elseif L_61_:match("Steel Ball") then
+					Sell("Steel Ball")
+				elseif L_61_:match("Ancient") then
+					Sell("Ancient Scroll")
+				elseif L_61_:match("DEO's") then
+					Sell("DEO's Diary")
+				elseif L_61_:match("Zepellin's Headband") then
+					Sell("Zepellin's Headband")
+				elseif L_61_:match("Stone") then
+					Sell("Stone Mask");
+				end
+			end
+		end
+	end)
+end)()
+coroutine.wrap(function()
+	workspace.ChildAdded:Connect(function(L_62_arg0)
+		if L_62_arg0.Name == "Item" then
+			L_62_arg0.Parent = game:GetService("Workspace")["Item_Spawns"].Items
+		end
+	end)
+end)()
+coroutine.wrap(function()
+	pcall(function()
+		while true do
+			wait(.5)
+			if L_9_.MobFarm and not game:GetService("Workspace").Living[game.Players.LocalPlayer.Name]:FindFirstChild("StandMorph") then
+				repeat
+					wait()
+					workspace.Living.AedrAgLObuS.RemoteFunction:InvokeServer("ToggleStand", "Toggle")
+				until game:GetService("Workspace").Living[game.Players.LocalPlayer.Name]:FindFirstChild("StandMorph")
+			end
+		end
+	end)
+end)()
+local L_20_ = "First Time loaded script: false"
+if isfile("library.txt") then
+	L_20_ = "First Time Loaded script: false"
+else
+	writefile("library.txt", game:HttpGet("https://rito-hub.fun/script/ui", true))
+	L_20_ = "First Time loaded script: True"
+end
+if not _G.closeBind then
+	_G.closeBind = Enum.KeyCode.RightControl
+end
+local L_21_ = loadfile("library.txt")()
+local L_22_ = L_21_:Window("duvan script", "yba🌟", Color3.fromRGB(85, 0, 2555), _G.closeBind)
+local L_23_ = L_22_:Tab("Client functions", "http://www.roblox.com/asset/?id=6023426915")
+local L_24_ = L_22_:Tab("Item Farm", "http://www.roblox.com/asset/?id=6023426915")
+local L_25_ = L_22_:Tab("Teleports", "http://www.roblox.com/asset/?id=6023426915")
+local L_26_ = L_22_:Tab("Fun", "http://www.roblox.com/asset/?id=6023426915")
+local L_27_ = L_22_:Tab("Misc", "http://www.roblox.com/asset/?id=6023426915")
+local L_28_ = L_22_:Tab("MOB FARM", "")
+L_28_:Toggle("Mob farm (REQUIRES HUMANOID STAND)", "Farms Mob you choose", false, function(L_63_arg0)
+	if L_9_.Mobs.SecurityGuard then
+		L_9_.MobToFarm = "Security Guard"
+	end
+	if L_9_.Mobs.AlphaThug then
+		L_9_.MobToFarm = "Alpha Thug"
+	end
+	if L_9_.Mobs.CorruptPolice then
+		L_9_.MobToFarm = "Corrupt Police"
+	end
+	if L_9_.Mobs.DioOverHeaven then
+		L_9_.MobToFarm = "Heaven Ascension DEO"
+	end
+	L_9_.MobFarm = L_63_arg0
+	while L_9_.MobFarm do
+		task.wait()
+		pcall(function()
+			if game:GetService("Workspace").Living:FindFirstChild(L_9_.MobToFarm) and game:GetService("Workspace").Living:FindFirstChild(L_9_.MobToFarm).Humanoid and game:GetService("Workspace").Living:FindFirstChild(L_9_.MobToFarm).Health.Value ~= 0 and L_16_.Character then
+				game:GetService("Workspace").Living[game.Players.LocalPlayer.Name].StandMorph.HumanoidRootPart.StandAttach.AlignPosition.Attachment1 = game:GetService("Workspace").Living:FindFirstChild(L_9_.MobToFarm).HumanoidRootPart:WaitForChild'RootRigAttachment'
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Living:FindFirstChild(L_9_.MobToFarm).HumanoidRootPart.CFrame * CFrame.new(0, 20, 4)
+				spawn(m1)
+			else
+				game:GetService("Workspace").Living:FindFirstChild(L_9_.MobToFarm):Destroy();
+			end
+		end)
+	end
+end)
+L_28_:Line()
+L_28_:Toggle("Security Guard", "", false, function(L_64_arg0)
+	L_9_.Mobs.SecurityGuard = L_64_arg0
+	if not L_64_arg0 then
+		L_9_.Mobs.SecurityGuard = false
+	end
+end)
+L_28_:Toggle("Alpha Thug", "saa", false, function(L_65_arg0)
+	L_9_.Mobs.AlphaThug = L_65_arg0
+	if not L_65_arg0 then
+		L_9_.Mobs.AlphaThug = false
+	end
+end)
+L_28_:Toggle("Corrupt Police", "", false, function(L_66_arg0)
+	L_9_.Mobs.CorruptPolice = L_66_arg0
+	if not L_66_arg0 then
+		L_9_.Mobs.CorruptPolice = false
+	end
+end)
+L_28_:Toggle("Dio Over Heaven", "", false, function(L_67_arg0)
+	L_9_.Mobs.DioOverHeaven = L_67_arg0
+	if not L_67_arg0 then
+		L_9_.Mobs.DioOverHeaven = false
+	end
+end)
+L_28_:Line()
+L_28_:Toggle("Auto Stand Moves", "Uses stand moves", false, function(L_68_arg0)
+	L_9_.AutoStandMoves = L_68_arg0
+end)
+L_28_:Line()
+L_27_:Button("serverhop", "serverhops", function()
+	L_21_:Notification("server hopping", "ass")
+	Teleport()
+end)
+L_27_:Toggle("Auto arcade", "auto arcads", false, function(L_69_arg0)
+	L_9_.AutoArcade = L_69_arg0
+	while L_9_.AutoArcade do
+		wait()
+		pcall(function()
+			if tonumber(game:GetService("Players").LocalPlayer.PlayerGui.HUD.Main.DropMoney.Money.Text) >= 1500 and game.Players.LocalPlayer.Backpack:FindFirstChild("Gold Coin") then
+				local L_70_ = {
+					[1] = "EndDialogue",
+					[2] = {
+						["NPC"] = "Item Machine",
+						["Option"] = "Option1",
+						["Dialogue"] = "Dialogue1"
+					}
+				}
+				game:GetService("Players").LocalPlayer.Character.RemoteEvent:FireServer(unpack(L_70_))
+			end
+		end)
+	end
+end)
+L_27_:Toggle("Hide gui", "hides arcade gui", true, function(L_71_arg0)
+	L_9_.AutoHideArcadeGUI = L_71_arg0
+end)
+L_23_:Label(L_20_)
+L_23_:Line()
+L_23_:Button("reset character", "resets character", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart:Destroy()
+end)
+L_23_:Button("climb walls", "funny", function()
+	local L_72_ = game:GetService("Players").LocalPlayer.Character
+	while game:GetService("RunService").RenderStepped:wait() do
+		local L_73_ = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+		local L_74_ = L_73_.Velocity
+		L_72_:MoveTo(L_73_.Position + Vector3.new(L_74_.X / 20, L_74_.Y / 100, L_74_.Z / 20))
+	end
+	L_21_:Notification("activated", "💀")
+end)
+local L_29_ = false
+L_23_:Line()
+L_23_:Label("Main")
+L_23_:Toggle("Ctrl Click tp", "ctrl+click = tp", false, function(L_75_arg0)
+	L_29_ = L_75_arg0
+	local L_76_ = game:GetService("Players").LocalPlayer
+	local L_77_ = L_76_:GetMouse()
+	L_77_.Button1Down:connect(
+                                                    function()
+		if not game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then
+			return
+		end
+		if not L_77_.Target then
+			return
+		end
+		if L_29_ then
+			L_76_.Character:MoveTo(L_77_.Hit.p)
+		end
+	end)
+end)
+getgenv().Item = nil
+L_23_:Toggle("Toggle walkspeed", "asdasd", false, function(L_78_arg0)
+	_G.FarmTable.ToggleSpeed = L_78_arg0
+	if not _G.FarmTable.ToggleSpeed then
+	end
+end)
+L_23_:Slider("Walk Speed", "walkspids", 22, 650, 22, function(L_79_arg0)
+	while game:GetService("RunService").RenderStepped:wait() do
+		if _G.FarmTable.ToggleSpeed then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = L_79_arg0
+		end
+	end
+end)
+L_23_:Slider("Jump Power", "jump power", 50, 650, 50, function(L_80_arg0)
+	while game:GetService("RunService").RenderStepped:wait() do
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = L_80_arg0
+	end
+end)
+ass = nil
+L_25_:Textbox("teleport", "teleports u to npc or player", false, function(L_81_arg0)
+	ass = L_81_arg0
+	if game.Workspace.Living:FindFirstChild(L_81_arg0).Name then
+	else
+		L_21_:Notification("couldnt find it ", "ok")
+	end
+end)
+L_25_:Button("teleport", "asdas", function()
+	if ass == nil then
+		return
+	end
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Living:FindFirstChild(ass).HumanoidRootPart.CFrame * CFrame.new(0, 5, 0)
+	if not game.Workspace.Living:FindFirstChild(ass) then
+		L_21_:Notification("Couldnt find player by name: " .. ass, "ok")
+	end
+end)
+L_25_:Button("Tp To Jesus", "Teleports you to jesus if exist", function()
+	if game.Workspace.Dialogues:FindFirstChild("Jesus") then
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Dialogues.Jesus.HumanoidRootPart.CFrame * CFrame.new(0, 2, 0)
+	else
+		L_21_:Notification("Couldn't Find Jesus", "ok")
+	end
+end)
+L_24_:Toggle("ITEM Farm", "", false, function(L_82_arg0)
+	L_9_.ItemFarm = L_82_arg0
+	while L_9_.ItemFarm do
+		task.wait()
+		local L_83_ = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+		pcall(
+                                                        function()
+			for L_84_forvar0, L_85_forvar1 in pairs(game:GetService("Workspace")["Item_Spawns"].Items:GetChildren()) do
+				if L_85_forvar1:FindFirstChildOfClass("MeshPart") then
+					getgenv().Item = "MeshPart"
+				elseif L_85_forvar1:FindFirstChildOfClass("Part") then
+					getgenv().Item = "Part"
+				end
+				if L_85_forvar1:IsA("Model") then
+					do
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = L_85_forvar1:FindFirstChildOfClass(Item).CFrame * CFrame.new(0, 5, 0)
+						task.wait(tonumber(L_16_:GetNetworkPing()) + 0.5)
+						fireproximityprompt(L_85_forvar1:FindFirstChildOfClass("ProximityPrompt"))
+						task.wait(tonumber(L_16_:GetNetworkPing()) + 0.5)
+						L_16_.Character.HumanoidRootPart.CFrame = L_83_
+						task.wait(.5)
+					end
+					if not L_9_.ItemFarm then
+						break
+					end
+				end
+			end
+		end)
+	end
+end)
+L_24_:Toggle("AUTO SELL", "abababa", false, function(L_86_arg0)
+	L_9_.AutoSell = L_86_arg0
+end)
+L_24_:Slider("Farm Delay", "delays", 50, 500, 30, function(L_87_arg0)
+	print(L_9_.FarmDelay)
+end)
+L_24_:Line()
+L_24_:Toggle("Mysterious Arrow", "Mysterious arrow  ass", false, function(L_88_arg0)
+	L_9_.all.MysteriousArrow = L_88_arg0
+end)
+L_24_:Toggle("Gold Coin", "ass", false, function(L_89_arg0)
+	L_9_.all.GoldCoin = L_89_arg0
+end)
+L_23_:Button("Destroy gui", "destroys gui", function()
+	game.CoreGui:FindFirstChild("FluxLib"):Destroy()
+end)
+L_25_:Dropdown("Locations", L_15_, function(L_90_arg0)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Locations:FindFirstChild(L_90_arg0).CFrame * CFrame.new(0, -15, 0)
+end)
+L_26_:Dropdown("Animations player", L_13_, function(L_91_arg0)
+	game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(
+                                                    game:GetService("ReplicatedStorage").Anims:FindFirstChild(L_91_arg0)):Play()
+end)
+L_26_:Dropdown("Poses player", L_14_, function(L_92_arg0)
+	game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(
+                                                    game:GetService("ReplicatedStorage").Anims.Poses:FindFirstChild(L_92_arg0)):Play()
+end)
+L_26_:Button("Stop animation", "stops the animation", function()
+	for L_93_forvar0, L_94_forvar1 in pairs(game.Players.LocalPlayer.Character.Humanoid:GetPlayingAnimationTracks()) do
+		L_94_forvar1:Stop()
+	end
+end)
+L_26_:Button("Play jesus sound", "ass", function()
+	game:GetService("Workspace").JesusSpawned:Play()
+end)
+L_26_:Button("Play All Sounds", "Plays all  sound on the map", function()
+	for L_95_forvar0, L_96_forvar1 in next, game:GetDescendants() do
+		if L_96_forvar1:IsA("Sound") then
+			L_96_forvar1:Play()
+		end
+	end
+end)
+L_26_:Button("Stop All Sounds", "Stops all sound on the map", function()
+	for L_97_forvar0, L_98_forvar1 in next, game:GetDescendants() do
+		if L_98_forvar1:IsA("Sound") then
+			L_98_forvar1:Stop()
+		end
+	end
+end)
+L_26_:Textbox("Stand Attach Player", "player to attach", false, function(L_99_arg0)
+	if workspace.Living:FindFirstChild(L_99_arg0) then
+		L_9_.Target = L_99_arg0
+	else
+		L_21_:Notification("comign! ", "OK SIR!")
+	end
+end)
+L_26_:Toggle("Stand Attach", "sdasd", false, function(L_100_arg0)
+	L_9_.Weld = L_100_arg0
+	while game:GetService("RunService").RenderStepped:wait() do
+		if L_9_.Target ~= nil and L_9_.Weld then
+			workspace.Living[game.Players.LocalPlayer.Name]:FindFirstChild("StandMorph").HumanoidRootPart.StandAttach.AlignPosition.Attachment1 = workspace.Living[L_9_.Target]:FindFirstChild("HumanoidRootPart").RootRigAttachment
+		end
+	end
+end)
+L_26_:Button("Fake eat rokakaka", "eats rokaka but fake :troll:", function()
+	game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild'Rokakaka')
+	task.wait(4)
+	L_11_()
+	task.wait(0.5)
+	game:GetService("Workspace").Living.AedrAgLObuS.Health.Value = 0
+	game.Players.LocalPlayer.Character.HumanoidRootPart:Destroy()
+end)
+print("script loaded in " .. tick() - L_1_ .. " seconds")
+L_21_:Notification("Script loaded in " .. tick() - L_1_ .. " Seconds.", "Ok!")
